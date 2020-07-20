@@ -41,7 +41,7 @@ metadata:
     app: javawebapp
   name: javawebapp
 spec:
-  type: LoadBalancer
+  type: NodePort
   ports:
     - port: 8080
       targetPort: 8080
