@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: java-controller
+  name: javawebapp
 spec:
   replicas: 2
   strategy:
@@ -24,7 +24,14 @@ spec:
       - name: javawebapp
         image: ayoobnaz/java-web-app
         ports:
-        - containerPort: 80	  
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "64Mi"
+          limits:
+            cpu: "100m"
+            memory: "256Mi"
 ---
 # Node Port Service
 apiVersion: v1
@@ -40,3 +47,21 @@ spec:
       targetPort: 8080
   selector:
     app: javawebapp
+
+---
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: hpadeploymentautoscaler
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: javawebapp
+  minReplicas: 2
+  maxReplicas: 50
+  metrics:
+    - resource:
+        name: cpu
+        targetAverageUtilization: 50
+      type: Resource
