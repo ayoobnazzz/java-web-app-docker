@@ -1,6 +1,7 @@
 ---
 apiVersion: apps/v1
 kind: Deployment
+namespace: java-web-app-ns
 metadata:
   name: javawebapp
 spec:
@@ -34,6 +35,7 @@ spec:
 # Node Port Service
 apiVersion: v1
 kind: Service
+namespace: java-web-app-ns
 metadata:
   labels:
     app: javawebapp
@@ -49,6 +51,7 @@ spec:
 ---
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
+namespace: java-web-app-ns
 metadata:
   name: hpadeploymentautoscaler
 spec:
